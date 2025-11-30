@@ -159,14 +159,12 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 ## 📧 Support
 
 - **Issues**: [GitHub Issues](https://github.com/connorfinlayson/tella-webhook-extension/issues)
-- **Email**: connor@mvmplabs.com
-- **Website**: [MVMP Labs](https://mvmplabs.com)
+- **Website**: [Connor Finlayson](https://www.connorfinlayson.com)
 
 ## 🙏 Acknowledgments
 
-- Built for the no-code automation community
+- Built for Tella Lovers
 - Created by [Connor Finlayson](https://github.com/connorfinlayson)
-- Part of the [MVMP Labs](https://mvmplabs.com) ecosystem
 
 ---
 
