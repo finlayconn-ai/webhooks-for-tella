@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="styles.css">
+  <title>Tella to Webhook</title>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <div class="logo">🔗</div>
+      <div class="title">
+        <h1>Tella → Webhook</h1>
+        <p class="subtitle">Send video data to any service</p>
+      </div>
+    </div>
+
+    <!-- Simple Configuration Section -->
+    <div id="config-section" class="section">
+      <h2>🔧 Setup</h2>
+      <div class="form-group">
+        <label for="webhook-url">Webhook URL:</label>
+        <input type="url" id="webhook-url" placeholder="https://hooks.make.com/xxxx or https://hooks.zapier.com/xxxx">
+        <small>
+          Get webhook URL from
+          <a href="https://make.com" target="_blank">Make.com</a>,
+          <a href="https://zapier.com" target="_blank">Zapier</a>,
+          or any webhook service
+        </small>
+      </div>
+      <button id="save-webhook" class="btn btn-primary">💾 Save Webhook</button>
+    </div>
+
+    <!-- Main Action Section -->
+    <div id="main-section" class="section" style="display: none;">
+      <div id="status-indicator" class="status">
+        <span id="status-text">Checking page...</span>
+        <div id="status-icon" class="status-icon"></div>
+      </div>
+
+      <!-- Data Preview -->
+      <div id="data-preview" class="data-preview" style="display: none;">
+        <h3>📹 Video Data:</h3>
+        <div class="data-grid">
+          <div class="data-item">
+            <strong>Title:</strong>
+            <span id="preview-title">-</span>
+          </div>
+          <div class="data-item">
+            <strong>Duration:</strong>
+            <span id="preview-duration">-</span>
+          </div>
+          <div class="data-item">
+            <strong>Created:</strong>
+            <span id="preview-date">-</span>
+          </div>
+          <div class="data-item transcript-item" style="display: none;">
+            <strong>Transcript:</strong>
+            <div id="preview-transcript" class="transcript-preview">-</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Action Buttons -->
+      <div class="actions">
+        <button id="extract-data" class="btn btn-secondary">
+          🔍 Extract Data
+        </button>
+
+        <button id="send-to-webhook" class="btn btn-primary" style="display: none;">
+          🚀 Send to Webhook
+        </button>
+      </div>
+
+      <div class="settings-link">
+        <button id="configure" class="btn-link">⚙️ Change Webhook URL</button>
+      </div>
+    </div>
+
+    <!-- Results Section -->
+    <div id="results-section" class="section" style="display: none;">
+      <div id="success-message" class="alert alert-success" style="display: none;">
+        ✅ <span id="success-text">Successfully sent to webhook!</span>
+      </div>
+
+      <div id="error-message" class="alert alert-error" style="display: none;">
+        ❌ <span id="error-text">Error occurred</span>
+        <div class="error-details">
+          <small id="error-details"></small>
+        </div>
+      </div>
+
+      <button id="try-again" class="btn btn-secondary" style="display: none;">
+        🔄 Try Again
+      </button>
+    </div>
+
+    <!-- Footer -->
+    <div class="footer">
+      <small>
+        <a href="#" id="view-data">📋 View Raw Data</a> |
+        <a href="#" id="clear-config">🗑️ Clear Settings</a>
+      </small>
+    </div>
+  </div>
+
+  <!-- Raw Data Modal -->
+  <div id="raw-data-modal" class="modal" style="display: none;">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3>Raw Data (JSON)</h3>
+        <button id="close-modal" class="close-btn">×</button>
+      </div>
+      <div class="modal-body">
+        <pre id="raw-data-content"></pre>
+      </div>
+      <div class="modal-footer">
+        <button id="copy-data" class="btn btn-secondary">📋 Copy</button>
+        <button id="close-modal-btn" class="btn btn-primary">Close</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="popup.js"></script>
+</body>
+</html>

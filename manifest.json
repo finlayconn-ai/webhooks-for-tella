@@ -1,0 +1,54 @@
+{
+  "manifest_version": 3,
+  "name": "Tella to Webhook",
+  "version": "1.0.0",
+  "description": "Extract video data from Tella.tv and send to any webhook service (Make.com, Zapier, etc.)",
+
+  "icons": {
+    "16": "icons/icon-16.png",
+    "48": "icons/icon-48.png",
+    "128": "icons/icon-128.png"
+  },
+
+
+  "permissions": [
+    "activeTab",
+    "storage",
+    "notifications"
+  ],
+
+  "host_permissions": [
+    "https://www.tella.tv/*",
+    "https://tella.tv/*",
+    "https://*/*"
+  ],
+
+  "action": {
+    "default_popup": "popup.html",
+    "default_title": "Tella → Webhook",
+    "default_icon": {
+      "16": "icons/icon-16.png",
+      "48": "icons/icon-48.png",
+      "128": "icons/icon-128.png"
+    }
+  },
+
+  "content_scripts": [
+    {
+      "matches": [
+        "https://www.tella.tv/*",
+        "https://tella.tv/*"
+      ],
+      "js": ["content.js"],
+      "run_at": "document_idle"
+    }
+  ],
+
+  "background": {
+    "service_worker": "background.js"
+  },
+
+  "homepage_url": "https://github.com/connorfinlayson/tella-webhook-extension",
+
+  "author": "Connor Finlayson"
+}

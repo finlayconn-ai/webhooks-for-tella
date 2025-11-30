@@ -1,0 +1,40 @@
+# Development files
+.DS_Store
+*.log
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# Extension packaging
+*.zip
+*.crx
+*.pem
+
+# IDE and editor files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Node modules (if any)
+node_modules/
+npm-debug.log*
+
+# Temporary files
+tmp/
+temp/
+*.tmp
+
+# OS generated files
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+
+# Chrome extension store assets (keep in repo but ignore builds)
+store-assets/*.zip
+
+# Test files
+test-*.js
