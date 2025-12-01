@@ -65,6 +65,11 @@ class TellaSidebarWebhook {
     try {
       const result = await chrome.storage.local.get(['webhookUrl', 'webhookConfig']);
 
+      // Check for Chrome runtime errors
+      if (chrome.runtime.lastError) {
+        throw new Error(chrome.runtime.lastError.message);
+      }
+
       // Use webhookUrl if available, or migrate from old webhookConfig structure
       if (result.webhookUrl) {
         this.webhookUrl = result.webhookUrl;
@@ -73,7 +78,13 @@ class TellaSidebarWebhook {
         this.webhookUrl = result.webhookConfig.baseUrl;
         // Save as simple URL and clean up old config
         await chrome.storage.local.set({ webhookUrl: this.webhookUrl });
+        if (chrome.runtime.lastError) {
+          throw new Error(chrome.runtime.lastError.message);
+        }
         await chrome.storage.local.remove(['webhookConfig']);
+        if (chrome.runtime.lastError) {
+          throw new Error(chrome.runtime.lastError.message);
+        }
       }
 
       console.log('✅ Webhook URL loaded:', this.webhookUrl ? 'configured' : 'not configured');
@@ -83,14 +94,16 @@ class TellaSidebarWebhook {
 
       // Report to error handler and try fallback
       if (window.tellaErrorHandler) {
-        const fallbackValue = window.tellaErrorHandler.handleError('storage_access', error, {
-          operation: 'read',
-          key: 'webhookUrl'
-        });
-
-        if (fallbackValue && fallbackValue.webhookUrl) {
-          this.webhookUrl = fallbackValue.webhookUrl;
+        const fallbackValue = window.tellaErrorHandler.tryLocalStorageFallback('read', 'webhookUrl');
+        if (fallbackValue) {
+          // Fallback returns the stored value directly (string)
+          this.webhookUrl = fallbackValue;
           console.log('✅ Webhook URL loaded from fallback storage');
+        } else {
+          window.tellaErrorHandler.handleError('storage_access', error, {
+            operation: 'read',
+            key: 'webhookUrl'
+          });
         }
       }
     }
@@ -635,6 +648,12 @@ class TellaSidebarWebhook {
     try {
       this.webhookUrl = webhookUrl;
       await chrome.storage.local.set({ webhookUrl: this.webhookUrl });
+      
+      // Check for Chrome runtime errors (storage API doesn't throw, it sets lastError)
+      if (chrome.runtime.lastError) {
+        throw new Error(chrome.runtime.lastError.message);
+      }
+      
       this.showSuccess('✅ Webhook URL saved!');
       this.updateInterface();
 
@@ -642,7 +661,18 @@ class TellaSidebarWebhook {
 
     } catch (error) {
       console.error('❌ Error saving webhook URL:', error);
-      this.showError('Failed to save webhook URL');
+      const errorMessage = error?.message || 'Unknown error';
+      this.showError(`Failed to save webhook URL: ${errorMessage}`);
+      
+      // Try localStorage fallback if available
+      if (window.tellaErrorHandler) {
+        const fallbackResult = window.tellaErrorHandler.tryLocalStorageFallback('write', 'webhookUrl', this.webhookUrl);
+        if (fallbackResult) {
+          console.log('✅ Saved to localStorage fallback');
+          this.showSuccess('✅ Webhook URL saved (using fallback storage)!');
+          this.updateInterface();
+        }
+      }
     }
   }
 
@@ -1060,15 +1090,24 @@ class TellaSidebarWebhook {
 
     const configSection = this.container.querySelector('#sidebar-config');
     const mainSection = this.container.querySelector('#sidebar-main');
+    const sendButtonContainer = this.container.querySelector('#sidebar-primary-send');
 
     if (configSection && mainSection) {
       if (hasWebhook) {
         configSection.style.display = 'none';
         mainSection.style.display = 'block';
+        // Show send button when webhook is configured
+        if (sendButtonContainer) {
+          sendButtonContainer.style.display = 'block';
+        }
         this.checkPageStatus(); // Re-check page when webhook is configured
       } else {
         configSection.style.display = 'block';
         mainSection.style.display = 'none';
+        // Hide send button when no webhook
+        if (sendButtonContainer) {
+          sendButtonContainer.style.display = 'none';
+        }
       }
     }
   }
@@ -1106,8 +1145,10 @@ class TellaSidebarWebhook {
    * Show send button
    */
   showSendButton() {
-    // Primary send button is always visible when webhook URL is configured
-    // No need to show/hide secondary button anymore
+    const sendButtonContainer = this.container.querySelector('#sidebar-primary-send');
+    if (sendButtonContainer && this.webhookUrl) {
+      sendButtonContainer.style.display = 'block';
+    }
   }
 
   /**
