@@ -109,7 +109,7 @@ The extension provides a complete dataset organized into logical sections:
 
 ### Project Structure
 ```
-tella-hook/
+webhooks-for-tella/
 ├── manifest.json          # Extension configuration
 ├── content.js            # Page content extraction and data extraction
 ├── background.js         # Background service worker
@@ -130,8 +130,8 @@ tella-hook/
 ### Local Development
 1. Clone the repository:
    ```bash
-   git clone https://github.com/finlayconn-ai/tella-hook.git
-   cd tella-hook
+   git clone https://github.com/finlayconn-ai/webhooks-for-tella.git
+   cd webhooks-for-tella
    ```
 
 2. Install dependencies (if needed):
@@ -190,7 +190,7 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ## 📧 Support
 
-- **Issues**: [GitHub Issues](https://github.com/finlayconn-ai/tella-hook/issues)
+- **Issues**: [GitHub Issues](https://github.com/finlayconn-ai/webhooks-for-tella/issues)
 - **Website**: [Connor Finlayson](https://www.connorfinlayson.com)
 
 ## 🙏 Acknowledgments

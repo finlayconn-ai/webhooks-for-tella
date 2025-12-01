@@ -49,4 +49,4 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ---
 
 **Need help or have feature requests?**
-Open an issue on [GitHub](https://github.com/connorfinlayson/tella-webhook-extension/issues) or reach out at connor@mvmplabs.com
+Open an issue on [GitHub](https://github.com/finlayconn-ai/webhooks-for-tella/issues) or reach out at connor@mvmplabs.com

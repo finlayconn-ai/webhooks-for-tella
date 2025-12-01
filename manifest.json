@@ -39,7 +39,7 @@
     "service_worker": "background.js"
   },
 
-  "homepage_url": "https://github.com/connorfinlayson/tella-webhook-extension",
+  "homepage_url": "https://github.com/finlayconn-ai/webhooks-for-tella",
 
   "author": "Connor Finlayson"
 }

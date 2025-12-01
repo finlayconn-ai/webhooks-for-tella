@@ -91,7 +91,7 @@ If you have questions about this privacy policy:
 
 - **Email**: connor@mvmplabs.com
 - **Website**: [https://mvmplabs.com](https://mvmplabs.com)
-- **GitHub Issues**: [https://github.com/connorfinlayson/tella-webhook-extension/issues](https://github.com/connorfinlayson/tella-webhook-extension/issues)
+- **GitHub Issues**: [https://github.com/finlayconn-ai/webhooks-for-tella/issues](https://github.com/finlayconn-ai/webhooks-for-tella/issues)
 
 ## Summary
 
