@@ -69,13 +69,13 @@ The extension provides a complete dataset organized into logical sections:
 ## 📖 How to Use
 
 ### Basic Setup
-1. **Navigate to a Tella.tv video page** - The extension only works on video pages with the `/view` URL structure (e.g., `https://www.tella.tv/video/your-video-id/view`)
-2. **Click the extension icon** in your browser toolbar
-3. **Enter your webhook URL** in the provided field
-4. **Click "Extract Data"** to pull video information
-5. **Click "Send to Webhook"** to deliver the data to your automation
+1. **Navigate to a Tella.tv video page** - The extension automatically detects video pages with the `/view` URL structure (e.g., `https://www.tella.tv/video/your-video-id/view`)
+2. **Click the "Webhook" tab** in the Tella.tv sidebar (appears alongside Chapters, Transcript, Comments)
+3. **Enter your webhook URL** in the configuration section (first time only)
+4. **Data is automatically extracted** - The extension automatically extracts video data when you visit a video page
+5. **Click "Send to Webhook"** to deliver the data to your automation service
 
-> **Note**: The extension requires the URL to end with `/view`. Pages without this suffix will not work.
+> **Note**: The extension works seamlessly with Tella.tv's SPA navigation - no page refresh needed when navigating between videos!
 
 ### Webhook URL Examples
 - **Make.com**: `https://hook.eu1.make.com/your-webhook-id`
