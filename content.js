@@ -127,7 +127,9 @@ class TellaDataExtractor {
         description: story.description || '',
         url: story.url || window.location.href,
         dimensions: story.dimensions || null,
-        views: story.views || 0
+        views: story.views || 0,
+        slug: story.slug || null,
+        channelIDs: story.channelIDs || null
       },
 
       // Timing and date information
