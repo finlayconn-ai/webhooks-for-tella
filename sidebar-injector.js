@@ -176,30 +176,8 @@ class TellaSidebarInjector {
    * Detect Tella's sidebar using multiple selector strategies
    */
   async detectSidebar() {
-    // First, try direct search for elements containing "Chapters" text
-    console.log('🔍 Searching for elements containing "Chapters" text...');
-    const allElements = document.querySelectorAll('*');
-
-    for (const element of allElements) {
-      const text = element.textContent?.toLowerCase() || '';
-      if (text.includes('chapters')) {
-        console.log('🔍 Found element with Chapters text:', element);
-
-        // Check if this element or its parent is a valid sidebar container
-        let currentElement = element;
-        for (let i = 0; i < 5; i++) { // Check up to 5 parent levels
-          if (this.validateSidebarStructure(currentElement)) {
-            console.log(`✅ Valid sidebar found via Chapters text search (level ${i})`);
-            return currentElement;
-          }
-          currentElement = currentElement.parentElement;
-          if (!currentElement) break;
-        }
-      }
-    }
-
-    // Fallback to selector-based approach
-    console.log('🔍 Falling back to selector-based search...');
+    // First, try efficient selector-based approach
+    console.log('🔍 Trying selector-based search...');
     for (const selector of this.sidebarSelectors) {
       try {
         const elements = document.querySelectorAll(selector);
@@ -214,6 +192,28 @@ class TellaSidebarInjector {
       } catch (error) {
         console.warn(`⚠️ Error with selector ${selector}:`, error);
         continue;
+      }
+    }
+
+    // Fallback: Search for "Chapters" text within targeted containers only
+    console.log('🔍 Falling back to targeted "Chapters" text search...');
+    const sidebarCandidates = document.querySelectorAll('[role="tablist"], nav, aside, [class*="sidebar"], [class*="tab"], [aria-label*="tab"]');
+
+    for (const candidate of sidebarCandidates) {
+      const text = candidate.textContent?.toLowerCase() || '';
+      if (text.includes('chapters')) {
+        console.log('🔍 Found candidate with Chapters text:', candidate);
+
+        // Check if this element or its parent is a valid sidebar container
+        let currentElement = candidate;
+        for (let i = 0; i < 5; i++) { // Check up to 5 parent levels
+          if (this.validateSidebarStructure(currentElement)) {
+            console.log(`✅ Valid sidebar found via Chapters text search (level ${i})`);
+            return currentElement;
+          }
+          currentElement = currentElement.parentElement;
+          if (!currentElement) break;
+        }
       }
     }
 
