@@ -748,10 +748,11 @@ class TellaSidebarInjector {
   }
 
   /**
-   * Create webhook panel element (updated to match exact Tella content structure)
+   * Create webhook panel element (empty container - interface rendering handled by sidebar-webhook.js)
    */
   createWebhookPanel() {
-    // Create main panel container with Tella's exact structure
+    // Create main panel container - just an empty container
+    // The actual interface will be rendered by TellaSidebarWebhook.renderInterface()
     const panel = document.createElement('div');
 
     // Start hidden and match exactly the structure from the content switcher
@@ -760,148 +761,10 @@ class TellaSidebarInjector {
     panel.setAttribute('aria-labelledby', 'tella-webhook-tab');
     panel.id = 'tella-webhook-panel';
 
-    // Match the exact content structure shown: <div class="hidden"> or <div class="animate-slideDownAndFade">
-    panel.innerHTML = `
-      <div class="flex flex-col w-full group">
-        <div class="sticky top-0 left-0 right-0 flex flex-col h-17 z-10 flex-shrink-0 pointer-events-none">
-          <div class="flex items-center justify-between h-8 bg-white dark:bg-night-900 pr-1 pt-1">
-            <h2 class="text-sm font-semibold text-slate-900 dark:text-gray-100" aria-selected="false" data-state="inactive">Send to Webhook</h2>
-            <div class="flex pointer-events-auto gap-2">
-              <div class="opacity-0 group-hover:opacity-100 transition-opacity flex gap-2">
-                <span class="inline-flex">
-                  <button aria-label="" class="inline-flex items-center text-sm font-medium transition ease-in-out duration-150 active:scale-97 will-change-transform group whitespace-nowrap border text-slate-400 border-transparent hover:bg-slate-50 dark:hover:bg-white/[.10] dark:bg-night-900/[.06] hover:text-slate-900 dark:text-gray-100 dark:hover:text-white focus:outline-none focus-visible:shadow-outline-indigo px-3 py-1 rounded-lg pl-2.5" tabindex="0" type="button" data-state="closed">
-                    <div class="relative flex items-center justify-center gap-1">
-                      <span class="">
-                        <svg aria-hidden="false" aria-label="" class="stroke-current w-5 h-5 text-slate-400 dark:text-gray-400" height="24" width="24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                          <path d="M6.5 15.25V15.25C5.5335 15.25 4.75 14.4665 4.75 13.5V6.75C4.75 5.64543 5.64543 4.75 6.75 4.75H13.5C14.4665 4.75 15.25 5.5335 15.25 6.5V6.5" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"></path>
-                          <rect height="10.5" width="10.5" rx="2" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" x="8.75" y="8.75"></rect>
-                        </svg>
-                      </span>
-                      <span>Copy</span>
-                    </div>
-                  </button>
-                </span>
-                <span class="inline-flex">
-                  <button aria-label="" class="inline-flex items-center text-sm font-medium transition ease-in-out duration-150 active:scale-97 will-change-transform group whitespace-nowrap border text-slate-400 border-transparent hover:bg-slate-50 dark:hover:bg-white/[.10] dark:bg-night-900/[.06] hover:text-slate-900 dark:text-gray-100 dark:hover:text-white focus:outline-none focus-visible:shadow-outline-indigo px-3 py-1 rounded-lg pl-2.5" tabindex="0" type="button">
-                    <div class="relative flex items-center justify-center gap-1">
-                      <span class="group-hover:text-slate-400 dark:text-gray-400">
-                        <svg aria-hidden="false" aria-label="" class="stroke-current w-5 h-5" height="24" width="24" fill="none" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                          <path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"/>
-                          <circle cx="12" cy="12" r="3"/>
-                        </svg>
-                      </span>
-                      <span>Settings</span>
-                    </div>
-                  </button>
-                </span>
-              </div>
-            </div>
-          </div>
-          <div class="w-full h-8 transition-opacity duration-200 opacity-0"></div>
-        </div>
-        <div class="flex flex-col gap-1 -mt-5 pb-6 text-pretty">
-          <div class="flex flex-col w-full group">
+    // Empty container - TellaSidebarWebhook will populate it via renderInterface()
+    // This eliminates duplicate interface rendering code
 
-            <!-- Header -->
-            <div class="tella-webhook-header">
-              <h3>🔗 Webhook Integration</h3>
-              <p class="subtitle">Send video data to any webhook service</p>
-            </div>
-
-
-            <!-- Configuration Section -->
-            <div id="sidebar-config" class="tella-config-section" style="display: none;">
-              <div class="form-group">
-                <label for="sidebar-webhook-url">Webhook URL</label>
-                <input type="url" id="sidebar-webhook-url" placeholder="https://hooks.make.com/webhook-id">
-                <small>
-                  Paste your webhook URL from
-                  <a href="https://make.com" target="_blank">Make.com</a>,
-                  <a href="https://zapier.com" target="_blank">Zapier</a>,
-                  or any service
-                </small>
-              </div>
-              <button id="sidebar-save-webhook" class="tella-btn tella-btn-primary">
-                💾 Save Webhook URL
-              </button>
-            </div>
-
-            <!-- Main Actions Section -->
-            <div id="sidebar-main" class="tella-main-section" style="display: block;">
-
-              <!-- Data Preview -->
-              <div id="sidebar-data-preview" class="tella-data-preview" style="display: none;">
-                <h4>📊 Extracted Data</h4>
-                <div class="data-summary">
-                  <div class="data-item">
-                    <strong>Title:</strong>
-                    <span id="sidebar-preview-title">Not extracted</span>
-                  </div>
-                  <div class="data-item">
-                    <strong>Duration:</strong>
-                    <span id="sidebar-preview-duration">Not extracted</span>
-                  </div>
-                  <div class="data-item">
-                    <strong>Date:</strong>
-                    <span id="sidebar-preview-date">Not extracted</span>
-                  </div>
-                  <div class="transcript-item" style="display: none;">
-                    <strong>Transcript:</strong>
-                    <div id="sidebar-preview-transcript" class="transcript-preview"></div>
-                  </div>
-                </div>
-              </div>
-
-              <!-- Action Buttons -->
-              <div class="tella-actions">
-                <button id="sidebar-extract-data" class="tella-btn tella-btn-primary" style="display: none;">
-                  🔍 Extract Video Data
-                </button>
-
-                <button id="sidebar-send-webhook" class="tella-btn tella-btn-primary" style="display: none;">
-                  🚀 Send to Webhook
-                </button>
-
-                <button id="sidebar-configure" class="tella-btn tella-btn-secondary">
-                  ⚙️ Configure Webhook
-                </button>
-              </div>
-
-              <!-- Quick Actions -->
-              <div class="tella-quick-actions">
-                <button id="sidebar-view-data" class="tella-btn tella-btn-link" style="display: none;">
-                  👁️ View Raw Data
-                </button>
-                <button id="sidebar-copy-data" class="tella-btn tella-btn-link" style="display: none;">
-                  📋 Copy Data
-                </button>
-              </div>
-
-            </div>
-
-            <!-- Results Section -->
-            <div id="sidebar-results" class="tella-results-section" style="display: none;">
-              <!-- Success Message -->
-              <div id="sidebar-success" class="tella-alert tella-alert-success" style="display: none;">
-                <span id="sidebar-success-text"></span>
-              </div>
-
-              <!-- Error Message -->
-              <div id="sidebar-error" class="tella-alert tella-alert-error" style="display: none;">
-                <span id="sidebar-error-text"></span>
-                <div id="sidebar-error-details" class="error-details"></div>
-                <button id="sidebar-try-again" class="tella-btn tella-btn-secondary" style="display: none; margin-top: 8px;">
-                  🔄 Try Again
-                </button>
-              </div>
-            </div>
-
-          </div>
-        </div>
-      </div>
-    `;
-
-    console.log('✅ Webhook panel created with exact Tella content structure');
+    console.log('✅ Webhook panel container created (interface will be rendered by sidebar-webhook.js)');
     return panel;
   }
 
