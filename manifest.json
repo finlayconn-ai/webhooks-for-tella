@@ -19,8 +19,7 @@
 
   "host_permissions": [
     "https://www.tella.tv/*",
-    "https://tella.tv/*",
-    "https://*/*"
+    "https://tella.tv/*"
   ],
 
 
