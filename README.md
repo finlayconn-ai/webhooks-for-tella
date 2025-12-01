@@ -1,4 +1,4 @@
-# Tella to Webhook
+# Webhooks for Tella
 
 > Extract video data from Tella.tv and send it to any webhook service (Make.com, Zapier, and more!)
 
@@ -8,7 +8,7 @@
 
 ## 📸 Screenshot
 
-![Tella to Webhook Extension](screenshots/extension-screenshot.jpg)
+![Webhooks for Tella Extension](screenshots/extension-screenshot.jpg)
 
 *The extension integrates seamlessly into Tella.tv's sidebar as a native tab, allowing you to extract and send video data to any webhook service.*
 
@@ -55,7 +55,7 @@ The extension provides a complete dataset organized into logical sections:
 ## 🛠 Installation
 
 ### From Chrome Web Store
-1. Visit the [Tella to Webhook extension](https://chrome.google.com/webstore) on Chrome Web Store
+1. Visit the [Webhooks for Tella extension](https://chrome.google.com/webstore) on Chrome Web Store
 2. Click "Add to Chrome"
 3. Confirm by clicking "Add Extension"
 

@@ -1,10 +1,10 @@
-# Privacy Policy for Tella to Webhook Extension
+# Privacy Policy for Webhooks for Tella Extension
 
 **Last Updated**: November 30, 2024
 
 ## Overview
 
-The Tella to Webhook extension ("the Extension") is committed to protecting your privacy. This privacy policy explains how we handle your information.
+The Webhooks for Tella extension ("the Extension") is committed to protecting your privacy. This privacy policy explains how we handle your information.
 
 ## Information We Do NOT Collect
 

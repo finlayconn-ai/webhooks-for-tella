@@ -1,6 +1,6 @@
 {
   "manifest_version": 3,
-  "name": "Tella to Webhook",
+  "name": "Webhooks for Tella",
   "version": "1.1.0",
   "description": "Extract video data from Tella.tv and send to any webhook service (Make.com, Zapier, etc.)",
 

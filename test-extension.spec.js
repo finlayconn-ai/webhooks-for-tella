@@ -1,5 +1,5 @@
 /**
- * Playwright tests for Tella to Webhook Chrome Extension
+ * Playwright tests for Webhooks for Tella Chrome Extension
  * 
  * Run with: npx playwright test
  */
@@ -7,7 +7,7 @@
 const { test, expect } = require('@playwright/test');
 const path = require('path');
 
-test.describe('Tella to Webhook Extension', () => {
+test.describe('Webhooks for Tella Extension', () => {
   let extensionId;
   let context;
   let page;
