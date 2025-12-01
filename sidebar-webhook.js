@@ -125,6 +125,60 @@ class TellaSidebarWebhook {
   }
 
   /**
+   * Send a message to the background script with timeout protection
+   * @param {Object} message - The message to send
+   * @param {number} timeoutMs - Timeout in milliseconds (default: 10000)
+   * @returns {Promise<Object>} The response from the background script
+   */
+  async sendRuntimeMessage(message, timeoutMs = 10000) {
+    return new Promise((resolve, reject) => {
+      if (!chrome || !chrome.runtime || !chrome.runtime.sendMessage) {
+        reject(new Error('Chrome runtime API not available'));
+        return;
+      }
+
+      let timeoutId;
+      let resolved = false;
+
+      const cleanup = () => {
+        if (timeoutId) {
+          clearTimeout(timeoutId);
+        }
+      };
+
+      // Set up timeout
+      timeoutId = setTimeout(() => {
+        if (!resolved) {
+          resolved = true;
+          cleanup();
+          reject(new Error(`Message timeout after ${timeoutMs}ms: ${message.action || 'unknown action'}`));
+        }
+      }, timeoutMs);
+
+      // Send message
+      chrome.runtime.sendMessage(message, (response) => {
+        if (resolved) return;
+
+        resolved = true;
+        cleanup();
+
+        // Check for Chrome runtime errors
+        if (chrome.runtime.lastError) {
+          reject(new Error(chrome.runtime.lastError.message));
+          return;
+        }
+
+        if (!response) {
+          reject(new Error('No response from background script'));
+          return;
+        }
+
+        resolve(response);
+      });
+    });
+  }
+
+  /**
    * Render the sidebar webhook interface
    */
   renderInterface() {
@@ -647,16 +701,10 @@ class TellaSidebarWebhook {
       // Method 3: Try runtime message (content script listens for this)
       if (!response || !response.success) {
         try {
-          if (chrome && chrome.runtime && chrome.runtime.sendMessage) {
-            response = await new Promise((resolve) => {
-              chrome.runtime.sendMessage({
-                action: 'extractData',
-                source: 'sidebar'
-              }, (response) => {
-                resolve(response);
-              });
-            });
-          }
+          response = await this.sendRuntimeMessage({
+            action: 'extractData',
+            source: 'sidebar'
+          });
         } catch (e) {
           console.warn('⚠️ Runtime message failed:', e);
         }
@@ -753,29 +801,11 @@ class TellaSidebarWebhook {
       console.log('📡 Sending to webhook:', this.webhookUrl);
       console.log('📦 Payload:', payload);
 
-      // Send to webhook using proper promise handling
-      const response = await new Promise((resolve, reject) => {
-        chrome.runtime.sendMessage(
-          {
-            action: 'sendToWebhook',
-            url: this.webhookUrl,
-            data: payload
-          },
-          (response) => {
-            // Check for Chrome runtime errors
-            if (chrome.runtime.lastError) {
-              reject(new Error(chrome.runtime.lastError.message));
-              return;
-            }
-            
-            if (!response) {
-              reject(new Error('No response from background script'));
-              return;
-            }
-            
-            resolve(response);
-          }
-        );
+      // Send to webhook using proper promise handling with timeout
+      const response = await this.sendRuntimeMessage({
+        action: 'sendToWebhook',
+        url: this.webhookUrl,
+        data: payload
       });
 
       console.log('📨 Webhook response:', response);
