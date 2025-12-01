@@ -5,6 +5,14 @@ All notable changes to the Webhooks for Tella extension will be documented in th
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.1.1] - 2024-12-01
+
+### Fixed
+- **Webhook Save Issue** - Fixed inability to save webhook URLs by properly checking `chrome.runtime.lastError` after storage operations
+- **Send Button Visibility** - Fixed "Send to Webhook" button not appearing after saving webhook configuration
+- **Error Handling** - Improved error messages to show actual error details for better debugging
+- **Storage Fallback** - Added localStorage fallback when chrome.storage fails
+
 ## [1.1.0] - 2024-12-01
 
 ### 🚀 Major Update: Sidebar Integration
