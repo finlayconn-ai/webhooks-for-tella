@@ -791,18 +791,7 @@ class TellaSidebarWebhook {
       this.updateStatus('checking', 'Sending to webhook...');
 
       // Prepare payload with all extracted data
-      const contentData = this.extractedData.content || {};
-      const chapters = contentData.chapters || [];
-      const chaptersMd = this.formatChaptersAsMarkdown(chapters);
-      
-      // Create enhanced data object with chaptersMd
-      const enhancedData = {
-        ...this.extractedData,
-        content: {
-          ...contentData,
-          chaptersMd: chaptersMd
-        }
-      };
+      const enhancedData = this._buildEnhancedPayload();
       
       const payload = {
         event: 'tella_data_extracted',
@@ -1039,6 +1028,24 @@ class TellaSidebarWebhook {
   }
 
   /**
+   * Build enhanced payload with chaptersMd added to content
+   * @private
+   */
+  _buildEnhancedPayload() {
+    const contentData = this.extractedData?.content || {};
+    const chapters = contentData.chapters || [];
+    const chaptersMd = this.formatChaptersAsMarkdown(chapters);
+    
+    return {
+      ...this.extractedData,
+      content: {
+        ...contentData,
+        chaptersMd: chaptersMd
+      }
+    };
+  }
+
+  /**
    * Update status indicator (removed - status indicator no longer displayed)
    */
   updateStatus(status, message) {
@@ -1233,18 +1240,7 @@ class TellaSidebarWebhook {
     if (!this.extractedData) return null;
 
     // Add chaptersMd to the payload
-    const contentData = this.extractedData.content || {};
-    const chapters = contentData.chapters || [];
-    const chaptersMd = this.formatChaptersAsMarkdown(chapters);
-    
-    // Create enhanced data object with chaptersMd
-    const enhancedData = {
-      ...this.extractedData,
-      content: {
-        ...contentData,
-        chaptersMd: chaptersMd
-      }
-    };
+    const enhancedData = this._buildEnhancedPayload();
 
     return {
       event: 'tella_data_extracted',
