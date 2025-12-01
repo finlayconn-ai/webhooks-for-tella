@@ -36,6 +36,7 @@ class TellaSidebarInjector {
     this.retryDelay = 1000; // 1 second
     this.isInjecting = false; // Prevent concurrent injections
     this.lastObservedUrl = null; // Track URL for navigation detection
+    this.observers = new Set(); // Track all MutationObserver instances for cleanup
 
     console.log('🔍 TellaSidebarInjector initialized');
   }
@@ -1041,6 +1042,9 @@ class TellaSidebarInjector {
         });
       });
 
+      // Track observer for cleanup
+      this.observers.add(observer);
+
       // Observe the button and its children for changes
       observer.observe(button, {
         attributes: true,
@@ -1082,6 +1086,9 @@ class TellaSidebarInjector {
         }
       });
     });
+
+    // Track observer for cleanup
+    this.observers.add(observer);
 
     // Observe our webhook tab for state changes
     observer.observe(this.webhookTab, {
@@ -1489,6 +1496,9 @@ class TellaSidebarInjector {
       });
     });
 
+    // Track observer for cleanup
+    this.observers.add(this.tabStateObserver);
+
     // Start observing the document for attribute changes
     const observeTarget = document.body;
 
@@ -1507,6 +1517,9 @@ class TellaSidebarInjector {
         }
       });
     });
+
+    // Track observer for cleanup
+    this.observers.add(this.structureObserver);
 
     this.structureObserver.observe(document.body, {
       childList: true,
@@ -1866,6 +1879,9 @@ class TellaSidebarInjector {
       }, 1000); // Debounce for 1 second
     });
 
+    // Track observer for cleanup
+    this.observers.add(observer);
+
     // Only observe body-level changes, not all subtree changes
     observer.observe(document.body, {
       childList: true,
@@ -1924,23 +1940,34 @@ class TellaSidebarInjector {
       this.webhookPanel.remove();
     }
 
-    // Clean up MutationObservers
+    // Clean up all MutationObservers
+    this.observers.forEach(observer => {
+      try {
+        observer.disconnect();
+      } catch (error) {
+        console.warn('⚠️ Error disconnecting observer:', error);
+      }
+    });
+    this.observers.clear();
+
+    // Clean up individual observer references (for backward compatibility)
     if (this.tabStateObserver) {
-      this.tabStateObserver.disconnect();
       this.tabStateObserver = null;
-      console.log('🧹 Tab state observer disconnected');
     }
 
     if (this.structureObserver) {
-      this.structureObserver.disconnect();
       this.structureObserver = null;
-      console.log('🧹 Structure observer disconnected');
     }
 
     // Clear timeouts
     if (this.structureChangeTimeout) {
       clearTimeout(this.structureChangeTimeout);
       this.structureChangeTimeout = null;
+    }
+
+    if (this.reinjectTimeout) {
+      clearTimeout(this.reinjectTimeout);
+      this.reinjectTimeout = null;
     }
 
     // Remove custom styles

@@ -520,6 +520,13 @@ class TellaPerformanceMonitor {
 
     console.log('🧹 Performance monitor cleaned up');
   }
+
+  /**
+   * Destroy method (alias for cleanup) for consistency
+   */
+  destroy() {
+    this.cleanup();
+  }
 }
 
 // Export for use in other files
